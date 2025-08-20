@@ -1,1 +1,14 @@
+# Environment
+.env
+.env.local
+
+# Build
+bin/
+*.exe
+*.log
+
+# IDE
+.vscode/
 .idea/
+*.swp
+*~

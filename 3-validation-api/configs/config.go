@@ -7,9 +7,14 @@ import (
 )
 
 type Config struct {
+	Server ServerConfig
 	Db     DbConfig
 	Auth   AuthConfig
-	Verify VerifyConfig
+	Email  EmailConfig
+}
+
+type ServerConfig struct {
+	BaseUrl string
 }
 
 type DbConfig struct {
@@ -20,10 +25,12 @@ type AuthConfig struct {
 	Secret string
 }
 
-type VerifyConfig struct {
-	Email    string
-	Password string
+type EmailConfig struct {
 	Address  string
+	Password string
+	SMTPHost string
+	SMTPPort string
+	From     string
 }
 
 func LoadConfig() *Config {
@@ -33,16 +40,21 @@ func LoadConfig() *Config {
 	}
 
 	return &Config{
+		Server: ServerConfig{
+			BaseUrl: os.Getenv("SERVER_BASE_URL"),
+		},
 		Db: DbConfig{
 			Dsn: os.Getenv("DSN"),
 		},
 		Auth: AuthConfig{
 			Secret: os.Getenv("TOKEN"),
 		},
-		Verify: VerifyConfig{
-			Email:    os.Getenv("VERIFY_EMAIL"),
-			Password: os.Getenv("VERIFY_PASSWORD"),
-			Address:  os.Getenv("VERIFY_ADDRESS"),
+		Email: EmailConfig{
+			Address:  os.Getenv("EMAIL_ADDRESS"),
+			Password: os.Getenv("EMAIL_PASSWORD"),
+			SMTPHost: os.Getenv("EMAIL_SMTP_HOST"),
+			SMTPPort: os.Getenv("EMAIL_SMTP_PORT"),
+			From:     os.Getenv("EMAIL_FROM"),
 		},
 	}
 }
