@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Vozhlak/golang-advanced/4-order-api/configs"
+	"github.com/Vozhlak/golang-advanced/4-order-api/internal/product"
 	"github.com/Vozhlak/golang-advanced/4-order-api/pkg/db"
 	"log"
 	"net/http"
@@ -15,7 +16,17 @@ func main() {
 
 	//Server
 	router := http.NewServeMux()
-	_ = db.NewDb(conf)
+
+	//DataBase
+	database := db.NewDb(conf)
+
+	//Repository
+	repositoryProduct := product.NewRepositoryProduct(database)
+
+	//Handlers
+	product.NewHandlerProduct(router, product.HandlerProductDeps{
+		ProductRepository: repositoryProduct,
+	})
 
 	server := http.Server{
 		Addr:    ":8081",
