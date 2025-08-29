@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Vozhlak/golang-advanced/4-order-api/configs"
 	"github.com/Vozhlak/golang-advanced/4-order-api/internal/product"
+	"github.com/Vozhlak/golang-advanced/4-order-api/middleware"
 	"github.com/Vozhlak/golang-advanced/4-order-api/pkg/db"
 	"log"
 	"net/http"
@@ -30,7 +31,7 @@ func main() {
 
 	server := http.Server{
 		Addr:    ":8081",
-		Handler: router,
+		Handler: middleware.Logging(router),
 	}
 
 	fmt.Println("Server is listen on port 8081")
